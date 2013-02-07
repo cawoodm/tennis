@@ -4,7 +4,7 @@ This was an experiment in creating an HTML5 game using the Component-Entity-Syst
 <img src="screenshot.png"/>
 </center>
 
-Built using the https://github.com/craftyjs/Crafty library it's based on the pong demo.
+Built using the https://github.com/craftyjs/Crafty library it's based on the pong demo. The IDE used was the excellent https://github.com/scripted-editor/scripted !
 
 ##Added Functionality
 * Animated Sprites instead of static blocks of colour
@@ -19,6 +19,6 @@ I also added some game logic to make it more fun:
 * Increased ball speed as the rally continues
 
 ##Player Instructions
-Player 1 (right) uses the arrow keys to move
-Player 2 (left) is the computer by default. Use ASWD to take over control.
-Press <space> to serve and start the game
+* Player 1 (right) uses the arrow keys to move
+* Player 2 (left) is the computer by default. Use ASWD to take over control.
+* Press <space> to serve and start the game
