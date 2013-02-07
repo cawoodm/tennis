@@ -27,7 +27,6 @@ Crafty.myGame.ePlayers = function() {
 			// Start running
 			if(!this.isPlaying('run')) {
 				this.animate('run', 18, -1); // Start run animation
-				console.log('run');
 				Crafty.audio.play('run', -1, 0.3);
 				}
 	  }

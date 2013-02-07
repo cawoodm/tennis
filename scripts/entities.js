@@ -38,7 +38,7 @@ Crafty.myGame.eBall = function() {
 				var pad;
 				this.y = H/2; //H*Crafty.math.randomInt(1, 5);
 				this.dX = this.dX1*(Math.abs(this.dX)/this.dX);    // Reset x speed
-				this.dY = 0; //this.dY1;                                // Reset y speed
+				this.dY = this.dY1;                                // Reset y speed
 				//this.moving = false;
 	      // Allocate points
 	      if (this.x > W) {
@@ -50,14 +50,15 @@ Crafty.myGame.eBall = function() {
 	        Crafty("RightPoints").each(function(){this.text(++this.points + " Points");});
 	        pad = getEntity('padright');
 	      }
+	      // Play Cheer
+	      if (Crafty.myGame.cheer) Crafty.audio.play('cheer', 1, 0.1);
 	      // Place ball at winner
 	      this.y = pad.y; this.x = pad.x;
-	      Crafty.audio.play('cheer1', 1, 0.1);
 	      return;
 			}
 			this.x += this.dX;
 			this.y += this.dY;
-		}) //.collision(new Crafty.polygon([0,0],[0,32],[32,32],[32,0]))
+		})
 		.onHit('Paddle', function (a) {
 			
 			// Waiting for serve
@@ -71,10 +72,7 @@ Crafty.myGame.eBall = function() {
 	      if (p.player !== 2) return;
 	    
 	      // Miss (avoid head/feet shots)
-	      if (b.x > p.x)  {
-		      Crafty.audio.play('cheer1', 1, 0.5);
-	      	return;
-	      } 
+	      if (b.x > p.x) return;
 	      
 	    } else {
 
@@ -82,10 +80,7 @@ Crafty.myGame.eBall = function() {
 	      if (p.player !== 1) return;
 
 	      // Miss (avoid head/feet shots)
-	      if (b.x < p.x+p.w/2) {
-		      Crafty.audio.play('cheer1', 1, 0.1);
-	      	return;
-	      }
+	      if (b.x < p.x+p.w/2) return;
 
 	    }
 		  // Hit ball back
@@ -166,7 +161,6 @@ Crafty.myGame.ePlayers = function() {
 			// Start running
 			if(!this.isPlaying('run')) {
 				this.animate('run', 18, -1); // Start run animation
-				console.log('run');
 				Crafty.audio.play('run', -1, 0.3);
 				}
 	  }
