@@ -1,4 +1,6 @@
-This was an experiment in creating an HTML5 game using the Component-Entity-System paradigm.
+#Crafty Tennis
+
+This is an experiment in creating an HTML5 game using the Component-Entity-System paradigm.
 
 <center>
 <img src="screenshot.png"/>
