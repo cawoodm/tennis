@@ -24,3 +24,5 @@ I also added some game logic to make it more fun:
 * Player 1 (right) uses the arrow keys to move
 * Player 2 (left) is the computer by default. Use ASWD to take over control.
 * Press <space> to serve and start the game
+
+Fun to make and fun to play!
