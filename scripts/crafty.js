@@ -9166,7 +9166,7 @@ Crafty.extend({
 	*
 	*/
 	modules: function (modulesRepository, moduleMap, oncomplete) {
-
+console.log('a');
 		if (arguments.length === 2 && typeof modulesRepository === "object") {
 			oncomplete = moduleMap;
 			moduleMap = modulesRepository;

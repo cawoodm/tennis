@@ -6,14 +6,6 @@ Crafty.myGame.ePlayers = function() {
 	var W = Crafty.myGame.W,
 			H = Crafty.myGame.H;
 
-	// Sprites
-	Crafty.sprite(32, "img/padleft.run.png", {
-	  padleft: [0, 0]
-	});
-	Crafty.sprite(32, "img/padright.run.png", {
-	  padright: [0, 0]
-	});
-
 	function runner(d) {
 			// Disable AI when moved by player
 			if (typeof this.off==='function') this.off();
@@ -31,7 +23,10 @@ Crafty.myGame.ePlayers = function() {
 				}
 	  }
 
-	//Paddles
+	// Player Left (with AI)
+	Crafty.sprite(32, "img/padleft.run.png", {
+	  padleft: [0, 0]
+	});
 	Crafty.e("Paddle, 2D, DOM, Color, Multiway, Bound, AI, padleft, SpriteAnimation")
 		.color('rgb(255,0,0)')
 		.attr({ x: 20, y: H/2, w: 32, h: 32, player: 1 })
@@ -41,6 +36,11 @@ Crafty.myGame.ePlayers = function() {
 		.bind('NewDirection', runner)
 	  .animate('run', 0, 0, 5) // From x=0, y=0 to x=5 (6 frames)
 		;
+  
+  // Player Right
+	Crafty.sprite(32, "img/padright.run.png", {
+	  padright: [0, 0]
+	});
 	Crafty.e("Paddle, 2D, DOM, Color, Multiway, Bound, padright, SpriteAnimation")
 		.color('rgb(0,255,0)')
 		.attr({ x: W-32, y: H/2, w: 32, h: 32, player: 2 })

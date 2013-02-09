@@ -44,11 +44,11 @@ Crafty.myGame.eBall = function() {
 	      if (this.x > W) {
 	        this.x = W/6;
 	        Crafty("LeftPoints").each(function(){this.text(++this.points + " Points");});
-	        pad = getEntity('padleft');
+	        pad = Crafty('padleft');
 	      } else {
 	        this.x = 4*W/6;
 	        Crafty("RightPoints").each(function(){this.text(++this.points + " Points");});
-	        pad = getEntity('padright');
+	        pad = Crafty('padright');
 	      }
 	      // Play Cheer
 	      if (Crafty.myGame.cheer) Crafty.audio.play('cheer', 1, 0.1);
