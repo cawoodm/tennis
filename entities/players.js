@@ -6,23 +6,6 @@ Crafty.myGame.ePlayers = function() {
 	var W = Crafty.myGame.W,
 			H = Crafty.myGame.H;
 
-	function runner(d) {
-			// Disable AI when moved by player
-			if (typeof this.off==='function') this.off();
-			
-			// Stop running
-			if (d.x===0 && d.y===0) {
-				Crafty.audio.stop('run');
-				return this.stop();
-			}
-			
-			// Start running
-			if(!this.isPlaying('run')) {
-				this.animate('run', 18, -1); // Start run animation
-				Crafty.audio.play('run', -1, 0.3);
-				}
-	  }
-
 	// Player Left (with AI)
 	Crafty.sprite(32, "img/padleft.run.png", {
 	  padleft: [0, 0]
@@ -50,6 +33,23 @@ Crafty.myGame.ePlayers = function() {
 	  .animate('run', 0, 0, 5) // From x=0, y=0 to x=5 (6 frames)
 		//.speed({x:10,y:10})
 		;
+
+	function runner(d) {
+			// Disable AI when moved by player
+			if (typeof this.off==='function') this.off();
+			
+			// Stop running
+			if (d.x===0 && d.y===0) {
+				Crafty.audio.stop('run');
+				return this.stop();
+			}
+			
+			// Start running
+			if(!this.isPlaying('run')) {
+				this.animate('run', 18, -1); // Start run animation
+				Crafty.audio.play('run', -1, 0.3);
+				}
+	  }
 
 };
 

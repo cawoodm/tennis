@@ -12,11 +12,11 @@ Crafty.myGame.eBall = function() {
 	Crafty.e("2D, DOM, Color, Collision, Ball")
 		.color('rgb(0,0,255)')
 		.attr({ x: W/2, y: 150, w: 32, h: 32, alpha: 1, 
-	      dX1: 4, // Initial speed
-	      dX: 4, //Crafty.math.randomInt(4, 6), 
+	      dX1: 4,  // Initial speed
+	      dX: 4,   //Crafty.math.randomInt(4, 6), 
 				dY1: 2,
 				dY: 2,
-				moving: false
+				moving: true
 		})
 		.bind('EnterFrame', function () {
 			
@@ -36,24 +36,26 @@ Crafty.myGame.eBall = function() {
 			// Ball out of bounds (right/left)
 			if (this.x > W || this.x < 10) {
 				var pad;
-				this.y = H/2; //H*Crafty.math.randomInt(1, 5);
-				this.dX = this.dX1*(Math.abs(this.dX)/this.dX);    // Reset x speed
-				this.dY = this.dY1;                                // Reset y speed
-				//this.moving = false;
+
 	      // Allocate points
 	      if (this.x > W) {
 	        this.x = W/6;
-	        Crafty("LeftPoints").each(function(){this.text(++this.points + " Points");});
+	        Crafty.myGame.scoreBoard.incScore("GamePointsLeft");
+	        //Crafty("LeftPoints").each(function(){this.text(++this.points + " Points");});
 	        pad = Crafty('padleft');
 	      } else {
 	        this.x = 4*W/6;
-	        Crafty("RightPoints").each(function(){this.text(++this.points + " Points");});
+	        //Crafty("RightPoints").each(function(){this.text(++this.points + " Points");});
+	        Crafty.myGame.scoreBoard.incScore("GamePointsRight");
 	        pad = Crafty('padright');
 	      }
 	      // Play Cheer
-	      if (Crafty.myGame.cheer) Crafty.audio.play('cheer', 1, 0.1);
+	      if (Crafty.myGame.cheer && Math.abs(this.dX) > 5) Crafty.audio.play('cheer', 1, 0.1);
 	      // Place ball at winner
 	      this.y = pad.y; this.x = pad.x;
+				// Reset speed
+				this.dX = this.dX1*(Math.abs(this.dX)/this.dX);
+				this.dY = this.dY1;                                
 	      return;
 			}
 			this.x += this.dX;
@@ -90,6 +92,7 @@ Crafty.myGame.eBall = function() {
 	    this.dY = Math.max(Math.min(this.dY, 4), -4); // Keep between -4 and +4
 		  // Speed up on each hit
 		  this.dX += 0.3*Math.abs(this.dX)/this.dX;
+		  this.dX = Math.round(this.dX*10)/10;
 		  // Play hit sound
 		  Crafty.audio.play('hit', 1, 1);
 	  })

@@ -52,7 +52,10 @@ Crafty.c('Bound', {
   }
 });
 
- // Our slide component - listens for slide events
+Crafty.c("Scoreboard", {
+	init: function() {
+	}
+}); // Our slide component - listens for slide events
  // and smoothly slides to another tile location
  Crafty.c("Slide", {
    init: function() {

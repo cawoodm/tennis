@@ -12,11 +12,11 @@ Crafty.myGame.eBall = function() {
 	Crafty.e("2D, DOM, Color, Collision, Ball")
 		.color('rgb(0,0,255)')
 		.attr({ x: W/2, y: 150, w: 32, h: 32, alpha: 1, 
-	      dX1: 4, // Initial speed
-	      dX: 4, //Crafty.math.randomInt(4, 6), 
+	      dX1: 4,  // Initial speed
+	      dX: 4,   //Crafty.math.randomInt(4, 6), 
 				dY1: 2,
 				dY: 2,
-				moving: false
+				moving: true
 		})
 		.bind('EnterFrame', function () {
 			
@@ -36,24 +36,26 @@ Crafty.myGame.eBall = function() {
 			// Ball out of bounds (right/left)
 			if (this.x > W || this.x < 10) {
 				var pad;
-				this.y = H/2; //H*Crafty.math.randomInt(1, 5);
-				this.dX = this.dX1*(Math.abs(this.dX)/this.dX);    // Reset x speed
-				this.dY = this.dY1;                                // Reset y speed
-				//this.moving = false;
+
 	      // Allocate points
 	      if (this.x > W) {
 	        this.x = W/6;
-	        Crafty("LeftPoints").each(function(){this.text(++this.points + " Points");});
+	        Crafty.myGame.scoreBoard.incScore("GamePointsLeft");
+	        //Crafty("LeftPoints").each(function(){this.text(++this.points + " Points");});
 	        pad = Crafty('padleft');
 	      } else {
 	        this.x = 4*W/6;
-	        Crafty("RightPoints").each(function(){this.text(++this.points + " Points");});
+	        //Crafty("RightPoints").each(function(){this.text(++this.points + " Points");});
+	        Crafty.myGame.scoreBoard.incScore("GamePointsRight");
 	        pad = Crafty('padright');
 	      }
 	      // Play Cheer
-	      if (Crafty.myGame.cheer) Crafty.audio.play('cheer', 1, 0.1);
+	      if (Crafty.myGame.cheer && Math.abs(this.dX) > 5) Crafty.audio.play('cheer', 1, 0.1);
 	      // Place ball at winner
 	      this.y = pad.y; this.x = pad.x;
+				// Reset speed
+				this.dX = this.dX1*(Math.abs(this.dX)/this.dX);
+				this.dY = this.dY1;                                
 	      return;
 			}
 			this.x += this.dX;
@@ -90,6 +92,7 @@ Crafty.myGame.eBall = function() {
 	    this.dY = Math.max(Math.min(this.dY, 4), -4); // Keep between -4 and +4
 		  // Speed up on each hit
 		  this.dX += 0.3*Math.abs(this.dX)/this.dX;
+		  this.dX = Math.round(this.dX*10)/10;
 		  // Play hit sound
 		  Crafty.audio.play('hit', 1, 1);
 	  })
@@ -140,23 +143,6 @@ Crafty.myGame.ePlayers = function() {
 	var W = Crafty.myGame.W,
 			H = Crafty.myGame.H;
 
-	function runner(d) {
-			// Disable AI when moved by player
-			if (typeof this.off==='function') this.off();
-			
-			// Stop running
-			if (d.x===0 && d.y===0) {
-				Crafty.audio.stop('run');
-				return this.stop();
-			}
-			
-			// Start running
-			if(!this.isPlaying('run')) {
-				this.animate('run', 18, -1); // Start run animation
-				Crafty.audio.play('run', -1, 0.3);
-				}
-	  }
-
 	// Player Left (with AI)
 	Crafty.sprite(32, "img/padleft.run.png", {
 	  padleft: [0, 0]
@@ -185,6 +171,23 @@ Crafty.myGame.ePlayers = function() {
 		//.speed({x:10,y:10})
 		;
 
+	function runner(d) {
+			// Disable AI when moved by player
+			if (typeof this.off==='function') this.off();
+			
+			// Stop running
+			if (d.x===0 && d.y===0) {
+				Crafty.audio.stop('run');
+				return this.stop();
+			}
+			
+			// Start running
+			if(!this.isPlaying('run')) {
+				this.animate('run', 18, -1); // Start run animation
+				Crafty.audio.play('run', -1, 0.3);
+				}
+	  }
+
 };
 
 /**
@@ -195,15 +198,55 @@ Crafty.myGame.eScoreboards = function() {
 	var W = Crafty.myGame.W,
 			H = Crafty.myGame.H;
 			
-	Crafty.e("LeftPoints, DOM, 2D, Text, Color")
-		.attr({ x: 20, y: 10, w: 100, h: 20, points: 0 })
-		.text("0 Points")
-		.textColor('#FFFF00', 0.8)
+	Crafty.sprite("img/digits.png", {
+		Score0:  [0,   0, 70, 60],
+		Score15: [0,  60, 70, 60],
+		Score30: [0, 120, 70, 60],
+		Score40: [0, 180, 70, 60],
+		Score00: [0, 240, 70, 60]
+	});
+			
+	Crafty.sprite("img/digits0.png", {
+		Games0:  [0,   0, 35, 60],
+		Games1:  [35,  0, 35, 60],
+		Games2:  [70,  0, 35, 60],
+		Games3:  [105, 0, 35, 60],
+		Games4:  [140, 0, 35, 60],
+		Games5:  [175, 0, 35, 60],
+		Games6:  [210, 0, 35, 60]
+	});
+			
+	// Game Points
+	Crafty.e("GamePointsLeft, DOM, 2D")
+		.attr({ x: W/2-90, y: 10, w: 70, h: 60, points: 0 })
+		.bind('Game', function(e) {
+			console.log('Game', e);
+			Crafty.myGame.scoreBoard.resetGameScore();
+		})
 	  ;
-	Crafty.e("RightPoints, DOM, 2D, Text, Color")
-		.attr({ x: W-100, y: 10, w: 100, h: 20, points: 0 })
-		.text("0 Points")
-		.textColor('#FFFFFF', 0.8)
+	Crafty.e("GamePointsRight, DOM, 2D")
+		.attr({ x: W/2+20, y: 10, w: 70, h: 60, points: 0 })
+		.bind('Game', function(e) {
+			console.log('Game', e);
+			Crafty.myGame.scoreBoard.resetGameScore();
+		})
 		;
+	
+	// Set Points
+	Crafty.e("SetPointsLeft, DOM, 2D, Games0")
+		.attr({ x: 20, y: 10, w: 35, h: 60, points: 0})
+		.bind('Set', function(e) {
+			console.log('Set', e);
+			Crafty.myGame.scoreBoard.resetSetScore();
+		})
+	  ;
+	Crafty.e("SetPointsRight, DOM, 2D, Games0")
+		.attr({ x: W-90, y: 10, w: 35, h: 60, points: 0 })
+		.bind('Game', function(e) {
+			console.log('Set', e);
+			Crafty.myGame.scoreBoard.resetSetScore();
+		})
+		;
+
 };
 
