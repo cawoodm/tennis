@@ -63,9 +63,11 @@ function Scoreboard() {
     if (eName.indexOf('Left')>=0) {
       if (scores[this.leftScore] === '40') {
         if (scores[this.rightScore] !== '40') {
-          en.trigger('Game', eName);
+          this.incGame('Left');
+          this.resetGameScore();
         } else if (this.advantage === 'Left') {
-          en.trigger('Game', eName);
+          this.incGame('Left');
+          this.resetGameScore();
         } else {
           this.advantage = 'Left';
         }
@@ -77,9 +79,11 @@ function Scoreboard() {
         console.log('inc right');
       if (scores[this.rightScore] === '40') {
         if (scores[this.leftScore] !== '40') {
-          en.trigger('Game', eName);
+          this.incGame('Right');
+          this.resetGameScore();
         } else if (this.advantage === 'Right') {
-          en.trigger('Game', eName);
+          this.incGame('Right');
+          this.resetGameScore();
         } else {
           this.advantage = 'Right';
         }
@@ -88,6 +92,13 @@ function Scoreboard() {
       en.removeComponent('Score' + scores[this.rightScore] == '0' ? '00' : scores[this.rightScore]);
 			en.addComponent('Score' + scores[++this.rightScore]);
     }
+  };
+  this.incGame = function(side) {
+    var en = Crafty('SetPoints'+side);
+    console.log(en.points);
+    en.removeComponent('Games'+en.points);
+    en.points++;
+    en.addComponent('Games'+en.points);
   };
   this.resetGameScore = function() {
 			var en = Crafty('GamePointsLeft');

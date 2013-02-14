@@ -219,17 +219,17 @@ Crafty.myGame.eScoreboards = function() {
 	// Game Points
 	Crafty.e("GamePointsLeft, DOM, 2D")
 		.attr({ x: W/2-90, y: 10, w: 70, h: 60, points: 0 })
-		.bind('Game', function(e) {
+/*		.bind('Game', function(e) {
 			console.log('Game', e);
 			Crafty.myGame.scoreBoard.resetGameScore();
-		})
+		})*/
 	  ;
 	Crafty.e("GamePointsRight, DOM, 2D")
 		.attr({ x: W/2+20, y: 10, w: 70, h: 60, points: 0 })
-		.bind('Game', function(e) {
+/*		.bind('Game', function(e) {
 			console.log('Game', e);
 			Crafty.myGame.scoreBoard.resetGameScore();
-		})
+		})*/
 		;
 	
 	// Set Points
