@@ -50,7 +50,6 @@ function Scoreboard() {
   var scores = ['0', '15', '30', '40'];
   this.games = [0, 0];
   this.initGame = function(){
-		console.log('init()');
 		this.leftScore = 0;
 		this.rightScore = 0;
 		this.advantage = '';
@@ -95,7 +94,6 @@ function Scoreboard() {
   };
   this.incGame = function(side) {
     var en = Crafty('SetPoints'+side);
-    console.log(en.points);
     en.removeComponent('Games'+en.points);
     en.points++;
     en.addComponent('Games'+en.points);
