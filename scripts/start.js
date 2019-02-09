@@ -19,9 +19,10 @@ Crafty.scene("main", function() {
   Crafty.myGame.cheer = true;
 
   // Declare (random) Music (0=none)
-  Crafty.audio.add("bg", 'audio/bg' + Crafty.math.randomInt(0, 2) + '.mp3');
+  Crafty.audio.add("bg", 'audio/bg' + Crafty.math.randomInt(1, 2) + '.mp3');
 
   // Play Sounds
+  Crafty.support.audio=false;
   Crafty.audio.play('bg', - 1, 0.05);
   Crafty.audio.play('crowd', - 1, 0.03);
 });
@@ -29,18 +30,25 @@ Crafty.scene("main", function() {
 Crafty.scene("loading", function() {
 
   Crafty.e("2D, DOM, Color, Text").attr({
-    w: 100,
+    w: 300,
     h: 20,
     x: 150,
     y: 120
-  }).text("Loading").css({
+  }).text("Click to begin...").css({
     "text-align": "center",
     "color": "#FFFFFF"
   });
 
-  window.setTimeout(function() {
-    Crafty.scene("main");
-  }, 1000);
+  Crafty.addEvent(this, Crafty.stage.elem, "click", function() {
+  	if (window.SoundsInit) return;
+  	window.SoundsInit=true;
+  	console.log("a")
+  	Crafty.audio.add("hit", "audio/hit.mp3");
+  	Crafty.audio.play('hit', 1, 0.3);
+  	Crafty.scene("main");
+  });
+
+  //window.setTimeout(function() {Crafty.scene("main");}, 1000);
 
 });
 Crafty.scene("loading");
